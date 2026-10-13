@@ -125,8 +125,10 @@
     .chart .marker { stroke: var(--cp-border-strong); stroke-dasharray: 3 4; }
     .scroll { overflow-x: auto; }
     table { border-collapse: collapse; width: 100%; font-size: 13px; font-variant-numeric: tabular-nums; }
+    caption { text-align: left; padding: 12px 0; color: var(--cp-text-muted); }
     th, td { text-align: right; padding: 12px 10px; border-bottom: 1px solid var(--cp-border); vertical-align: top; }
     th { color: var(--cp-text-muted); font-weight: 600; }
+    tbody th { color: var(--cp-text); }
     th:first-child, td:first-child { text-align: left; }
     .accent { color: var(--cp-accent); }
     .flow { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
@@ -224,8 +226,10 @@
       <section class="panel">
         <h2>Kapitał rośnie, potem finansuje wypłaty</h2>
         <div class="keyline"><span class="key">AV · DE</span><span class="key etf">ETF · DE</span><span class="key pl">AV · PL</span><span class="key etf pl">ETF · PL</span></div>
-        <svg id="wealth-chart" class="chart" viewBox="0 0 860 300" role="img" aria-label="Wykres pozostałego kapitału według wieku; wartości w tabeli poniżej"></svg>
+        <svg id="wealth-chart" class="chart" viewBox="0 0 860 300" role="img" aria-label="Wykres pozostałego kapitału według wieku" aria-describedby="wealth-description"></svg>
         <small>Kapitał brutto przed przyszłym podatkiem od wypłat. AV obejmuje depozyt emerytalny i boczny ETF. To nie jest kwota dostępna do natychmiastowej wypłaty bez konsekwencji.</small>
+        <small id="wealth-description">Wszystkie wartości z wykresu są dostępne w rozwijanej tabeli „Kapitał rok po roku” bezpośrednio poniżej.</small>
+        <details><summary>Kapitał rok po roku</summary><div class="scroll"><table id="wealth-yearly"></table></div></details>
       </section>
       <section class="panel">
         <h2>Cztery warianty, pełne rozliczenie</h2>
@@ -576,8 +580,8 @@
         $("funding-note").textContent = `Z budżetu ${money.format(p.monthly * 12)}/rok powstaje ${money.format(f.own + f.subsidy)} nowych wpłat do AV i ${money.format(f.refund + f.extra)} do bocznego ETF. Od ${p.moveAge}. urodzin w wariancie PL dopłaty i ulgi ustają; nowe ${money.format(p.monthly)}/mies. idzie do zwykłego ETF.`;
         $("money-mode").textContent = p.real ? "Siła nabywcza € z 2027" : "Nominalne € w przyszłości";
         $("metrics").innerHTML = results.map(r => `<article class="card metric ${r.kind}"><span class="chip">${r.move ? `Przeprowadzka do PL w wieku ${p.moveAge}` : "Pozostajesz w Niemczech"}</span><h3 style="margin-top:12px">${r.kind === "av" ? "Altersvorsorgedepot + boczny ETF" : "Zwykły ETF"}</h3><strong class="big">${cash(r.first.regularNet / 12, p.retireAge)}<small>netto / miesiąc w pierwszym roku</small></strong><small>Kapitał brutto przy starcie wypłat: ${cash(r.retirement.gross, p.retireAge)}${r.move ? "<br>AV w PL: wybrany scenariusz podatkowy" : ""}</small></article>`).join("");
-        const heads = `<thead><tr><th>Miara</th>${results.map(r => `<th>${title(r)}</th>`).join("")}</tr></thead>`;
-        const row = (label, values) => `<tr><td>${label}</td>${values.map(v => `<td>${v}</td>`).join("")}</tr>`;
+        const heads = `<thead><tr><th scope="col">Miara</th>${results.map(r => `<th scope="col">${title(r)}</th>`).join("")}</tr></thead>`;
+        const row = (label, values) => `<tr><th scope="row">${label}</th>${values.map(v => `<td>${v}</td>`).join("")}</tr>`;
         const totalOwn = r => p.real ? r.years.filter(y => y.saving).reduce((sum, y) => sum + p.monthly * 12 / y.factor, 0) : r.ownTotal;
         $("comparison").innerHTML = heads + "<tbody>" +
           row("Własne wpłaty z budżetu", results.map(r => money.format(totalOwn(r)))) +
@@ -592,11 +596,12 @@
         $("exit-warning").hidden = !exit;
         $("exit-warning").textContent = "Uwaga: koszt nabycia jednostek jednego ETF przy emigracji osiąga co najmniej 500 000 €. Możliwy niemiecki podatek od wyjścia nie jest uwzględniony. Nie opieraj decyzji na wynikach PL przed sprawdzeniem §19 ust. 3 InvStG i skutków traktatowych.";
         chart("wealth-chart", results.map(r => ({ ...r, label: title(r), values: r.snapshots.filter(s => s.age <= p.endAge).map(s => ({ age: s.age, value: display(s.gross, s.age) })) })), p.startAge, p.endAge, [{ age: p.moveAge, label: "PL" }, { age: p.retireAge, label: "Wypłaty" }]);
+        $("wealth-yearly").innerHTML = `<caption>Kapitał brutto na początku wskazanego wieku · ${p.real ? "siła nabywcza € z 2027" : "nominalne €"}</caption><thead><tr><th scope="col">Wiek · rok</th>${results.map(r => `<th scope="col">${title(r)}</th>`).join("")}</tr></thead><tbody>` + results[0].snapshots.filter(s => s.age <= p.endAge).map((s, i) => row(`${s.age} · ${2027 + s.age - p.startAge}`, results.map(r => cash(r.snapshots[i].gross, s.age)))).join("") + "</tbody>";
         chart("income-chart", results.map(r => ({ ...r, label: title(r), values: r.years.filter(y => !y.saving && y.age < p.endAge).map(y => ({ age: y.age, value: display(y.regularNet / 12, y.age) })) })), p.retireAge, p.endAge - 1);
-        $("yearly").innerHTML = `<thead><tr><th>Wiek · rok</th>${results.map(r => `<th>${title(r)}<br>netto / mies.</th>`).join("")}</tr></thead><tbody>` + results[0].years.filter(y => !y.saving && y.age < p.endAge).map(y => row(`${y.age} · ${y.year}`, results.map(r => cash(r.years.find(v => v.age === y.age).regularNet / 12, y.age)))).join("") + "</tbody>";
-        $("inheritance").innerHTML = `<thead><tr><th>Wariant</th><th>Cały pozostały kapitał</th><th>Zwrot wsparcia przy wypłacie AV</th><th>Dziecko / wypłata gotówką<br>przed podatkami</th><th>Małżonek: transfer AV + ETF<br>przed podatkami</th></tr></thead><tbody>` + results.map(r => {
+        $("yearly").innerHTML = `<thead><tr><th scope="col">Wiek · rok</th>${results.map(r => `<th scope="col">${title(r)}<br>netto / mies.</th>`).join("")}</tr></thead><tbody>` + results[0].years.filter(y => !y.saving && y.age < p.endAge).map(y => row(`${y.age} · ${y.year}`, results.map(r => cash(r.years.find(v => v.age === y.age).regularNet / 12, y.age)))).join("") + "</tbody>";
+        $("inheritance").innerHTML = `<thead><tr><th scope="col">Wariant</th><th scope="col">Cały pozostały kapitał</th><th scope="col">Zwrot wsparcia przy wypłacie AV</th><th scope="col">Dziecko / wypłata gotówką<br>przed podatkami</th><th scope="col">Małżonek: transfer AV + ETF<br>przed podatkami</th></tr></thead><tbody>` + results.map(r => {
           const s = r.snapshots.find(v => v.age === p.deathAge);
-          return `<tr><td>${title(r)}</td><td>${cash(s.gross, p.deathAge)}</td><td>${cash(s.supportRemaining, p.deathAge)}</td><td>${cash(s.child, p.deathAge)}${s.shortfall > .01 ? `<small>Niedobór: ${cash(s.shortfall, p.deathAge)}</small>` : ""}</td><td>${cash(s.gross, p.deathAge)}</td></tr>`;
+          return `<tr><th scope="row">${title(r)}</th><td>${cash(s.gross, p.deathAge)}</td><td>${cash(s.supportRemaining, p.deathAge)}</td><td>${cash(s.child, p.deathAge)}${s.shortfall > .01 ? `<small>Niedobór: ${cash(s.shortfall, p.deathAge)}</small>` : ""}</td><td>${cash(s.gross, p.deathAge)}</td></tr>`;
         }).join("") + "</tbody>";
         $("error").hidden = true;
         $("error").textContent = "";

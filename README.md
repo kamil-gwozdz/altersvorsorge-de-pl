@@ -51,6 +51,8 @@ python3 -m http.server 8000 --bind 127.0.0.1
 Testy używają wbudowanego runnera Node.js i wykonują ten sam kod modelu,
 który jest osadzony w HTML. Obejmują dopłaty, podatki, FIFO, Vorabpauschale,
 emigrację, dziedziczenie, zachowanie kapitału i wartości graniczne.
+Testy widoku sprawdzają nagłówki tabel oraz zgodność wszystkich punktów wykresu
+kapitału z dostępną tabelą, zarówno w kwotach nominalnych, jak i realnych.
 
 GitHub Pages może publikować plik bez etapu budowania. Kod objęty licencją MIT.
 Interactive Germany/Poland retirement savings calculator: Altersvorsorgedepot vs ETF.
