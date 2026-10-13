@@ -63,8 +63,13 @@ test("capital table exposes every chart point in nominal and real euros", () => 
   }
 });
 
-test("capital chart identifies its adjacent text alternative", () => {
-  assert.match(html, /id="wealth-chart"[^>]*aria-describedby="wealth-description"/);
-  assert.match(html, /id="wealth-description"[^>]*>[^<]*Kapitał rok po roku/);
-  assert.match(html, /<summary>Kapitał rok po roku<\/summary>[\s\S]*?<table id="wealth-yearly">/);
+test("both charts identify their adjacent text alternatives", () => {
+  for (const [chart, label, table] of [
+    ["wealth", "Kapitał rok po roku", "wealth-yearly"],
+    ["income", "Wypłaty rok po roku", "yearly"]
+  ]) {
+    assert.match(html, new RegExp(`id="${chart}-chart"[^>]*aria-describedby="${chart}-description"`));
+    assert.match(html, new RegExp(`id="${chart}-description"[^>]*>[^<]*${label}`));
+    assert.match(html, new RegExp(`<summary>${label}</summary>[\\s\\S]*?<table id="${table}">`));
+  }
 });
