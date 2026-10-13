@@ -1,0 +1,639 @@
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Porównaj Altersvorsorgedepot 2027 i ETF: dopłaty, podatki, emigracja do Polski, wypłaty i dziedziczenie. Jawne założenia, interaktywne suwaki.">
+  <title>150 € na przyszłość · Altersvorsorgedepot czy ETF?</title>
+  <script>
+    (() => {
+      const param = new URLSearchParams(window.location.search).get("clawpilotTheme");
+      const theme =
+        param || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+      document.documentElement.setAttribute("data-theme", theme);
+    })();
+  </script>
+  <style>
+    :root {
+      color-scheme: light;
+      --cp-bg: #f7f4ef;
+      --cp-bg-elevated: #fcfbf8;
+      --cp-surface: #ffffff;
+      --cp-surface-soft: #f5f5f5;
+      --cp-border: #dedede;
+      --cp-border-strong: #919191;
+      --cp-text: #242424;
+      --cp-text-muted: #5c5c5c;
+      --cp-text-soft: #6f6f6f;
+      --cp-accent: #b11f4b;
+      --cp-accent-hover: #9a1a41;
+      --cp-accent-soft: rgba(177, 31, 75, 0.08);
+      --cp-accent-fg: #ffffff;
+      --cp-success: #16a34a;
+      --cp-danger: #dc2626;
+      --cp-warning: #f59e0b;
+      --cp-link: #0078d4;
+      --cp-shadow: 0 18px 48px rgba(0, 0, 0, 0.12);
+      --cp-overlay: rgba(255, 255, 255, 0.8);
+      --cp-panel: rgba(255, 255, 255, 0.86);
+      --cp-panel-strong: rgba(255, 255, 255, 0.96);
+      --cp-sheen: rgba(255, 255, 255, 0.55);
+      --cp-highlight: rgba(177, 31, 75, 0.12);
+    }
+    html[data-theme="dark"] {
+      color-scheme: dark;
+      --cp-bg: #3d3b3a;
+      --cp-bg-elevated: #343231;
+      --cp-surface: #292929;
+      --cp-surface-soft: #2e2e2e;
+      --cp-border: #474747;
+      --cp-border-strong: #5f5f5f;
+      --cp-text: #dedede;
+      --cp-text-muted: #919191;
+      --cp-text-soft: #b0b0b0;
+      --cp-accent: #fd8ea1;
+      --cp-accent-hover: #fb7b91;
+      --cp-accent-soft: rgba(253, 142, 161, 0.14);
+      --cp-accent-fg: #1a1a1a;
+      --cp-success: #4ade80;
+      --cp-danger: #f87171;
+      --cp-warning: #fbbf24;
+      --cp-link: #4da6ff;
+      --cp-shadow: 0 18px 48px rgba(0, 0, 0, 0.32);
+      --cp-overlay: rgba(41, 41, 41, 0.88);
+      --cp-panel: rgba(41, 41, 41, 0.72);
+      --cp-panel-strong: rgba(41, 41, 41, 0.96);
+      --cp-sheen: rgba(255, 255, 255, 0.04);
+      --cp-highlight: rgba(253, 142, 161, 0.12);
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--cp-bg); color: var(--cp-text); font: 16px/1.55 "Segoe UI", Aptos, Calibri, -apple-system, BlinkMacSystemFont, sans-serif; }
+    a { color: var(--cp-link); text-underline-offset: 3px; }
+    button, input, select { font: inherit; }
+    button, select { border: 1px solid var(--cp-border); background: var(--cp-surface); color: var(--cp-text); border-radius: .625rem; padding: 9px 13px; }
+    button { cursor: pointer; }
+    button:hover, select:hover { border-color: var(--cp-accent); }
+    button:focus-visible, input:focus-visible, select:focus-visible, a:focus-visible, summary:focus-visible { outline: 3px solid var(--cp-accent); outline-offset: 3px; }
+    .primary { background: var(--cp-accent); color: var(--cp-accent-fg); border-color: var(--cp-accent); }
+    header, main, footer { max-width: 1440px; margin: auto; padding: 28px 32px; }
+    header { padding-top: 44px; }
+    .topline, .row, .control-label, .section-title { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+    .eyebrow { color: var(--cp-accent); text-transform: uppercase; letter-spacing: .1em; font-size: 12px; font-weight: 700; }
+    h1 { font-size: clamp(30px, 4vw, 52px); line-height: 1.12; letter-spacing: -.035em; margin: 16px 0; max-width: 900px; }
+    h2 { font-size: 23px; line-height: 1.25; letter-spacing: -.02em; margin: 0 0 16px; }
+    h3 { font-size: 17px; margin: 0 0 12px; }
+    p { margin: 0 0 16px; }
+    .lead { max-width: 950px; font-size: 18px; color: var(--cp-text-muted); }
+    .muted, small { color: var(--cp-text-muted); }
+    small { display: block; font-size: 12px; line-height: 1.5; }
+    .chip { display: inline-block; padding: 4px 9px; border-radius: .625rem; background: var(--cp-accent-soft); color: var(--cp-accent); font-size: 12px; font-weight: 650; }
+    .layout { display: grid; grid-template-columns: 320px minmax(0, 1fr); gap: 24px; align-items: start; }
+    .panel, .card { background: var(--cp-surface); border: 1px solid var(--cp-border); border-radius: 16px; padding: 24px; }
+    .controls { position: sticky; top: 16px; max-height: calc(100vh - 32px); overflow-y: auto; scrollbar-width: thin; }
+    .control { margin: 20px 0; }
+    .control-label { gap: 8px; align-items: start; font-size: 14px; }
+    .control-label label { max-width: 185px; }
+    .control-label output { white-space: nowrap; color: var(--cp-accent); font-weight: 700; font-variant-numeric: tabular-nums; }
+    input[type="range"] { width: 100%; margin: 10px 0 3px; accent-color: var(--cp-accent); cursor: pointer; }
+    input[type="checkbox"] { accent-color: var(--cp-accent); width: 16px; height: 16px; vertical-align: middle; }
+    .check { display: flex; align-items: start; gap: 8px; margin: 16px 0; font-size: 13px; }
+    .check input { flex: 0 0 auto; }
+    .controls select { width: 100%; font-size: 13px; }
+    details { border-top: 1px solid var(--cp-border); margin-top: 20px; padding-top: 16px; }
+    summary { cursor: pointer; font-weight: 650; }
+    .results > section { margin-bottom: 24px; }
+    .callout { border-left: 4px solid var(--cp-accent); padding: 16px 20px; background: var(--cp-accent-soft); border-radius: 0 10px 10px 0; margin-bottom: 20px; }
+    .callout p:last-child { margin-bottom: 0; }
+    .warning { border-color: var(--cp-warning); background: var(--cp-surface-soft); }
+    .error { border-color: var(--cp-danger); color: var(--cp-danger); }
+    .metrics { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+    .metric { border-top: 3px solid var(--cp-border-strong); }
+    .metric.av { border-top-color: var(--cp-accent); }
+    .big { display: block; font-size: clamp(26px, 3vw, 38px); font-weight: 700; letter-spacing: -.035em; font-variant-numeric: tabular-nums; margin: 8px 0; }
+    .keyline { display: flex; flex-wrap: wrap; gap: 12px; font-size: 13px; margin: 8px 0 16px; }
+    .key { display: inline-flex; align-items: center; gap: 6px; }
+    .key::before { content: ""; width: 22px; border-top: 3px solid var(--cp-accent); }
+    .key.etf::before { border-color: var(--cp-text-soft); }
+    .key.pl::before { border-top-style: dashed; }
+    .chart { display: block; width: 100%; height: auto; min-height: 180px; }
+    .chart text { fill: var(--cp-text-muted); font-family: inherit; font-size: 12px; }
+    .chart .grid { stroke: var(--cp-border); stroke-width: 1; }
+    .chart .av-line { stroke: var(--cp-accent); }
+    .chart .etf-line { stroke: var(--cp-text-soft); }
+    .chart .series { fill: none; stroke-width: 2.5; }
+    .chart .poland { stroke-dasharray: 7 5; }
+    .chart .marker { stroke: var(--cp-border-strong); stroke-dasharray: 3 4; }
+    .scroll { overflow-x: auto; }
+    table { border-collapse: collapse; width: 100%; font-size: 13px; font-variant-numeric: tabular-nums; }
+    th, td { text-align: right; padding: 12px 10px; border-bottom: 1px solid var(--cp-border); vertical-align: top; }
+    th { color: var(--cp-text-muted); font-weight: 600; }
+    th:first-child, td:first-child { text-align: left; }
+    .accent { color: var(--cp-accent); }
+    .flow { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+    .flow > div { padding: 16px; background: var(--cp-surface-soft); border-radius: .625rem; }
+    .flow strong { display: block; font-size: 24px; font-variant-numeric: tabular-nums; }
+    .notes { font-size: 14px; }
+    .notes li { margin-bottom: 10px; }
+    .notes ul, .notes ol { padding-left: 22px; }
+    .notes details p { margin-top: 14px; }
+    .sources { display: grid; gap: 8px; }
+    .tools { display: flex; flex-wrap: wrap; gap: 8px; }
+    .status { min-height: 24px; margin-top: 8px; font-size: 13px; }
+    footer { border-top: 1px solid var(--cp-border); color: var(--cp-text-muted); font-size: 13px; display: flex; flex-wrap: wrap; gap: 16px; }
+    [hidden] { display: none !important; }
+    @media (max-width: 1000px) {
+      header, main, footer { padding-left: 20px; padding-right: 20px; }
+      .layout { grid-template-columns: 280px minmax(0, 1fr); gap: 16px; }
+      .panel, .card { padding: 18px; }
+    }
+    @media (max-width: 760px) {
+      .layout { display: block; }
+      .controls { position: static; max-height: none; margin-bottom: 24px; }
+      .controls .basic { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 20px; }
+      .control-label { flex-wrap: wrap; gap: 0; }
+      .flow { grid-template-columns: 1fr; }
+      .section-title { align-items: start; flex-direction: column; }
+      .topline { align-items: start; }
+      header { padding-top: 24px; }
+    }
+    @media (max-width: 420px) { .metrics { grid-template-columns: 1fr; } .controls .basic { display: block; } }
+    @media print { .controls, .tools, #theme { display: none; } .layout { display: block; } .panel, .card { break-inside: avoid; } }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="topline"><span class="eyebrow">Niemcy → Polska · zasady sprawdzone 13.10.2026</span><button id="theme" type="button" aria-label="Zmień jasny lub ciemny motyw">Zmień motyw</button></div>
+    <h1>150 € miesięcznie.<br>Altersvorsorgedepot czy ETF?</h1>
+    <p class="lead">Ten sam budżet, cztery scenariusze. Zobacz, ile zostaje po podatkach, co zmienia przeprowadzka do Polski i co można zostawić bliskim.</p>
+    <div class="callout"><strong>Dopłata to nie zysk wolny od podatku.</strong> Przy 150 €/mies. państwo dopłaca 540 €/rok. W zamian wspierana część Altersvorsorgedepot jest co do zasady opodatkowana przy wypłacie <strong>w całości</strong>, a nie tylko od zysku. Zwykły ETF ma inne zasady.</div>
+  </header>
+  <main class="layout">
+    <aside class="panel controls" aria-label="Ustawienia symulacji">
+      <h2>Twoje założenia</h2>
+      <small>Domyślny wiek 35 lat to przykład, nie informacja o Tobie. Start: 1 stycznia 2027. Wszystko liczy się lokalnie w przeglądarce.</small>
+      <div class="basic">
+        <div class="control"><div class="control-label"><label for="startAge">Wiek na początku 2027</label><output for="startAge"></output></div><input id="startAge" type="range" min="18" max="64" step="1" value="35"></div>
+        <div class="control"><div class="control-label"><label for="monthly">Miesięczny budżet</label><output for="monthly"></output></div><input id="monthly" type="range" min="10" max="500" step="5" value="150"><small>Do 150 € do AV-depot; nadwyżka do zwykłego ETF.</small></div>
+        <div class="control"><div class="control-label"><label for="moveAge">Przeprowadzka do Polski</label><output for="moveAge"></output></div><input id="moveAge" type="range" min="35" max="67" step="1" value="50"><small>Tylko warianty PL. Warianty DE zostają w Niemczech.</small></div>
+        <div class="control"><div class="control-label"><label for="retireAge">Początek wypłat</label><output for="retireAge"></output></div><input id="retireAge" type="range" min="65" max="70" step="1" value="67"></div>
+        <div class="control"><div class="control-label"><label for="returnRate">Zwrot przed kosztami / rok</label><output for="returnRate"></output></div><input id="returnRate" type="range" min="-2" max="10" step="0.25" value="6"><small>Nominalny, stały w modelu; nie jest prognozą.</small></div>
+        <div class="control"><div class="control-label"><label for="workTax">Krańcowa stawka PIT w DE dziś</label><output for="workTax"></output></div><input id="workTax" type="range" min="0" max="45" step="1" value="42"><small>Przybliża ulgę podatkową; nie średnią stawkę od pensji.</small></div>
+      </div>
+      <details>
+        <summary>Koszty i podatki ETF</summary>
+        <div class="control"><div class="control-label"><label for="avFee">Łączne koszty AV-depot / rok</label><output for="avFee"></output></div><input id="avFee" type="range" min="0" max="2" step="0.05" value="0.6"><small>Łącznie z funduszem. To założenie, nie oferta. Limit 1% dotyczy Standarddepot, nie każdego produktu.</small></div>
+        <div class="control"><div class="control-label"><label for="etfFee">Łączne koszty ETF / rok</label><output for="etfFee"></output></div><input id="etfFee" type="range" min="0" max="1" step="0.05" value="0.2"></div>
+        <div class="control"><div class="control-label"><label for="baseRate">Basiszins dla Vorabpauschale</label><output for="baseRate"></output></div><input id="baseRate" type="range" min="0" max="5" step="0.1" value="2.5"><small>Hipotetyczna stała stopa, nie ogłoszony Basiszins 2027.</small></div>
+        <div class="control"><div class="control-label"><label for="allowance">Niewykorzystany Sparer-Pauschbetrag / rok</label><output for="allowance"></output></div><input id="allowance" type="range" min="0" max="1000" step="50" value="1000"><small>0 €, jeśli inne inwestycje zużywają całą kwotę wolną.</small></div>
+      </details>
+      <details open>
+        <summary>Podatki i wypłaty na emeryturze</summary>
+        <div class="control"><div class="control-label"><label for="deOther">Inny dochód do opodatkowania w DE / rok</label><output for="deOther"></output></div><input id="deOther" type="range" min="0" max="100000" step="1000" value="24000"><small>Dzisiejsze €. Dochód podatkowy, nie emerytura brutto; bez wypłat z symulatora.</small></div>
+        <div class="control"><div class="control-label"><label for="plOther">Inny dochód do opodatkowania w PL / rok</label><output for="plOther"></output></div><input id="plOther" type="range" min="0" max="240000" step="5000" value="60000"><small>Dzisiejsze PLN, bez wypłat z symulatora. Nie doliczaj automatycznie niemieckiej ustawowej emerytury: traktat przypisuje ją DE, nie polskiej skali.</small></div>
+        <div class="control"><label for="plMode">Opodatkowanie AV-depot w Polsce</label><select id="plMode"><option value="scale">Scenariusz: polska skala 12% / 32%</option><option value="custom">Własna efektywna stawka — analiza wrażliwości</option></select><small>Założenie wymagające potwierdzenia dla nowego produktu. Nie deklaracja podatkowa.</small></div>
+        <div class="control" id="custom-tax-control" hidden><div class="control-label"><label for="plCustom">Podatek od całej wypłaty AV w PL</label><output for="plCustom"></output></div><input id="plCustom" type="range" min="0" max="45" step="1" value="12"><small>0% nie oznacza potwierdzonego zwolnienia; 19% tutaj także dotyczy całej wypłaty, nie zysku.</small></div>
+        <div class="control"><div class="control-label"><label for="fx">Stały kurs EUR/PLN</label><output for="fx"></output></div><input id="fx" type="range" min="3" max="6" step="0.05" value="4.3"></div>
+        <div class="control"><div class="control-label"><label for="lump">Jednorazowo na początku</label><output for="lump"></output></div><input id="lump" type="range" min="0" max="30" step="5" value="0"><small>Ten sam % w obu strategiach. Reszta w planie wypłat; nie zakładamy wypłaty 100% AV.</small></div>
+        <div class="control"><div class="control-label"><label for="endAge">Plan wypłat do wieku</label><output for="endAge"></output></div><input id="endAge" type="range" min="85" max="100" step="1" value="85"></div>
+        <div class="control"><div class="control-label"><label for="retirementReturn">Zwrot w okresie wypłat / rok</label><output for="retirementReturn"></output></div><input id="retirementReturn" type="range" min="-2" max="8" step="0.25" value="3"></div>
+      </details>
+      <details>
+        <summary>Inflacja i sposób porównania</summary>
+        <div class="control"><div class="control-label"><label for="inflation">Inflacja / rok</label><output for="inflation"></output></div><input id="inflation" type="range" min="0" max="5" step="0.25" value="2"></div>
+        <label class="check"><input id="indexTax" type="checkbox" checked><span>Indeksuj progi PIT i kwoty wolne inflacją. To założenie przyszłej polityki, nie obowiązujące prawo.</span></label>
+        <label class="check"><input id="real" type="checkbox"><span>Pokaż kwoty w sile nabywczej z 2027 r. zamiast nominalnych €.</span></label>
+        <small>Wpłaty 150 € oraz limity dopłat pozostają nominalnie stałe. Inne dochody emerytalne rosną z inflacją. Zwrot podatku jest zawsze reinwestowany do osobnego ETF.</small>
+      </details>
+      <div class="tools" style="margin-top:20px"><button id="reset" type="button">Przywróć przykład</button><button id="export" type="button">Pobierz dane JSON</button></div>
+      <p class="status" id="status" role="status"></p>
+    </aside>
+    <div class="results">
+      <div id="error" class="callout error" role="alert" hidden></div>
+      <section class="panel" aria-labelledby="support-title">
+        <div class="section-title"><h2 id="support-title">Co dzieje się z Twoją wpłatą?</h2><span class="chip">Pełny rok uprawnienia w DE · bez dzieci</span></div>
+        <div class="flow" id="funding"></div>
+        <p class="muted" id="funding-note" style="margin-top:16px"></p>
+        <small>Porównanie przy równym wydatku z kieszeni: zwrot PIT nie znika i nie jest liczony drugi raz. Trafia do dodatkowego, zwykłego ETF w strategii AV.</small>
+      </section>
+      <section aria-labelledby="result-title">
+        <div class="section-title"><h2 id="result-title">Ile dostajesz miesięcznie?</h2><span class="chip" id="money-mode"></span></div>
+        <p class="muted">Średnia netto w pierwszych 12 miesiącach regularnych wypłat. Bez jednorazowej wypłaty; dodatkowy ETF w strategii AV jest wliczony.</p>
+        <p class="muted"><strong>Wariant AV → PL jest analizą wrażliwości:</strong> polska stawka i podstawa opodatkowania nowego produktu nie zostały potwierdzone interpretacją. Zmień założenie w panelu podatkowym, zamiast traktować wynik jako należny PIT.</p>
+        <div class="metrics" id="metrics"></div>
+      </section>
+      <section class="panel">
+        <h2>Kapitał rośnie, potem finansuje wypłaty</h2>
+        <div class="keyline"><span class="key">AV · DE</span><span class="key etf">ETF · DE</span><span class="key pl">AV · PL</span><span class="key etf pl">ETF · PL</span></div>
+        <svg id="wealth-chart" class="chart" viewBox="0 0 860 300" role="img" aria-label="Wykres pozostałego kapitału według wieku; wartości w tabeli poniżej"></svg>
+        <small>Kapitał brutto przed przyszłym podatkiem od wypłat. AV obejmuje depozyt emerytalny i boczny ETF. To nie jest kwota dostępna do natychmiastowej wypłaty bez konsekwencji.</small>
+      </section>
+      <section class="panel">
+        <h2>Cztery warianty, pełne rozliczenie</h2>
+        <div class="scroll"><table id="comparison"></table></div>
+        <small id="comparison-note" style="margin-top:12px"></small>
+        <div id="exit-warning" class="callout warning" style="margin-top:16px" hidden></div>
+      </section>
+      <section class="panel">
+        <h2>Wypłaty nie muszą być równe przez całe życie</h2>
+        <svg id="income-chart" class="chart" viewBox="0 0 860 270" role="img" aria-label="Wykres średnich regularnych wypłat miesięcznych netto według wieku"></svg>
+        <p class="muted">Model raz w roku dzieli pozostały kapitał przez liczbę miesięcy do końca planu. Podstawa: 100% kapitału, aktualizacja coroczna. Kapitał nadal pracuje; ostatnia rata obejmuje resztę. To <strong>plan terminowy, nie dożywotnia renta</strong>.</p>
+        <details><summary>Wypłaty rok po roku</summary><div class="scroll"><table id="yearly"></table></div></details>
+      </section>
+      <section class="panel">
+        <div class="section-title"><h2>Co zostaje dla bliskich?</h2><span class="chip">Śmierć na początku wskazanego wieku</span></div>
+        <div class="control" style="max-width:450px"><div class="control-label"><label for="deathAge">Wiek śmierci w scenariuszu</label><output for="deathAge"></output></div><input id="deathAge" type="range" min="35" max="100" step="1" value="80"></div>
+        <div class="scroll"><table id="inheritance"></table></div>
+        <p class="muted" style="margin-top:16px">To pozostałe aktywa, nie suma wcześniej otrzymanych i wydanych wypłat. Kolumna „dziecko / wypłata gotówką” odejmuje proporcjonalną część dopłat i dodatkowych ulg przypisaną do pozostałego AV. <strong>Kwoty są przed ewentualnym PIT spadkobiercy i podatkiem spadkowym.</strong> Przy stratach model pokazuje także niedobór, jeżeli zwrot wsparcia przewyższa pozostałe aktywa; zakres odpowiedzialności wymaga osobnej analizy.</p>
+        <div class="callout"><strong>Małżonek ≠ każdy spadkobierca.</strong> Współmałżonek może zachować wsparcie przy spełnieniu warunków i transferze AV do własnego certyfikowanego kontraktu — nie przy zwykłej wypłacie na konto. Dzieci i inni spadkobiercy zasadniczo zwracają wsparcie. Zwykły ETF nie ma takiego zwrotu dopłat.</div>
+        <small>Symulator nie wycenia polskiego/niemieckiego podatku spadkowego ani podatku przy późniejszej sprzedaży odziedziczonych ETF. Zwolnienie najbliższej rodziny w PL nie usuwa obowiązku zwrotu niemieckich dopłat.</small>
+      </section>
+      <section class="panel notes">
+        <h2>Co jest przepisem, a co założeniem?</h2>
+        <div class="callout warning"><strong>Polska: wariant podatkowy, nie potwierdzona interpretacja nowego AV-depot.</strong> Zachowanie niemieckich dopłat po przeprowadzce do UE nie oznacza zwolnienia z polskiego PIT. W modelu domyślnie cała wspierana wypłata AV podlega polskiej skali. Dla konkretnego kontraktu trzeba potwierdzić kwalifikację traktatową i krajową, również wypłaty jednorazowej. Suwak pozwala sprawdzić skutki innej efektywnej stawki.</div>
+        <details open>
+          <summary>1. Dopłaty i emigracja</summary>
+          <p>Od 2027 r. podstawowa dopłata wynosi 50% pierwszych 360 € i 25% kolejnych 1 440 € własnych wpłat rocznie: maksymalnie 540 €. Wymagana minimalna roczna wpłata dla dopłaty: 120 €. Model bez dzieci i premii dla młodych. Ulga PIT: przybliżenie <code>max(0, (wpłata wspierana + dopłata) × stawka krańcowa − dopłata)</code>; pomija dodatkowy efekt Soli i podatku kościelnego przy odliczeniu.</p>
+          <p>W wariancie PL przeprowadzka następuje na początku roku wskazanego wieku. Zakładamy koniec niemieckiej pracy objętej ubezpieczeniem i prawa do nowych dopłat. AV pozostaje bez nowych wpłat i dalej jest inwestowane; cały nowy budżet trafia do zwykłego ETF. Dotychczasowe dopłaty pozostają: Polska jest w UE. Nie symulujemy zatrudnienia transgranicznego ani kontynuowania niemieckiego ubezpieczenia.</p>
+          <p><strong>Poza UE/EOG jest inaczej:</strong> według §95 EStG zamieszkiwanie poza UE/EOG od fazy wypłat może oznaczać zwrot wsparcia. Sama emigracja w fazie oszczędzania to nie automatyczna natychmiastowa likwidacja. Ten kalkulator obejmuje wyłącznie DE i PL.</p>
+        </details>
+        <details>
+          <summary>2. Podatki: nie porównuj samych procentów</summary>
+          <p><strong>AV w DE:</strong> podatek od całej wspieranej wypłaty — własne wpłaty, dopłaty i zyski. Niemiecka skala PIT 2026 i Soli, indywidualne rozliczenie; liczymy dodatkowy podatek ponad podatek od innych dochodów. To nie stałe 25% i nie zawsze wyższa stawka niż dla ETF. Inne dochody wpisujesz już po odliczeniach, jako dochód do opodatkowania.</p>
+          <p><strong>Akumulujący akcyjny ETF w DE:</strong> co do zasady 25% podatku + Soli, przy 30% Teilfreistellung, czyli 18,4625% zysku przed kwotą wolną. Model uwzględnia dostępny Sparer-Pauschbetrag, FIFO i Vorabpauschale. Przy wypłatach porównuje podatek kapitałowy z niższym podatkiem ze skali (Günstigerprüfung). Nie ma podatku od zwrotu własnego kosztu nabycia.</p>
+          <p><strong>ETF w PL:</strong> 19% zysku; nie stosujemy niemieckiej kwoty wolnej ani 30% Teilfreistellung. Zachowujemy historyczny koszt nabycia, bez automatycznego resetu przy przeprowadzce. Niemieckiej Vorabpauschale nie odliczamy automatycznie od polskiego PIT. Rzeczywiste rozliczenie wymaga historycznych kursów NBP — tutaj wszystkie przepływy używają jednego stałego kursu.</p>
+          <p>Podatki dotyczą tylko inwestycji z symulatora. Nie liczymy składek zdrowotnych ani pielęgnacyjnych, podatku kościelnego, wspólnego rozliczenia, daniny solidarnościowej w PL, strat z innych portfeli ani przenoszenia strat pomiędzy latami. Sytuacja osoby dobrowolnie ubezpieczonej w GKV może różnić się od obowiązkowo ubezpieczonego emeryta.</p>
+        </details>
+        <details>
+          <summary>3. Kiedy i jak można wypłacić?</summary>
+          <p>Normalny początek wypłat nowych kontraktów: między 65. a 70. urodzinami; wcześniej możliwe w określonych przypadkach pobierania ustawowej emerytury. Można pobrać do 30% jednorazowo na początku, a resztę w planie co najmniej do 85 lat albo zamienić na dożywotnią rentę. Kalkulator symuluje plan terminowy. Zwykły ETF nie ma tych ograniczeń — dla porównywalności wypłacamy go według tego samego harmonogramu.</p>
+          <p>Wcześniejsze zwykłe wycofanie wspieranych pieniędzy oznacza zasadniczo zwrot dopłat i dodatkowych ulg. Wyjątki, np. kwalifikowany cel mieszkaniowy i mała emerytura, nie są tu modelowane. Jednorazowa wypłata może podnieść PIT w tym roku: w kalkulatorze jest sumowana z regularnymi ratami.</p>
+        </details>
+        <details>
+          <summary>4. Dokładność modelu i brak gwarancji</summary>
+          <p>Wpłaty na koniec miesiąca; dopłata i reinwestowany zwrot PIT na koniec tego samego roku — uproszczenie terminów administracyjnych. Stały zwrot przed kosztami, bez losowości, dywidend wypłacanych w gotówce i ryzyka kolejności zwrotów. Koszty obniżają roczny zwrot o wskazaną liczbę punktów procentowych.</p>
+          <p>Vorabpauschale jest przybliżana raz w roku dla każdej partii ETF: 70% hipotetycznego Basiszins × odpowiednia wartość i proporcja miesięcy, ograniczone wzrostem wartości. Potem obowiązuje 30% zwolnienia akcyjnego. Podatek jest finansowany sprzedażą ETF, z podatkiem od tej sprzedaży. Faktyczne rozliczenie następuje w kolejnym roku; model przyspiesza je na koniec roku, również przed emigracją.</p>
+          <p>Progi podatkowe mogą być zamrożone na poziomie 2026 albo indeksowane inflacją jako scenariusz. Wsparcie i wpłaty nigdy nie są indeksowane. Kwoty innych dochodów są indeksowane inflacją w obu trybach. Wyniki realne dyskontują każdy przepływ z osobna; nie są prognozą zmian prawa.</p>
+          <p>Nie uwzględniamy niemieckiego podatku od wyjścia z inwestycji funduszowych. Próg §19 ust. 3 InvStG to <strong>co najmniej 500 000 € kosztu nabycia w danym funduszu, nie jego wartości rynkowej</strong>; alternatywny test dotyczy co najmniej 1% jednostek w ostatnich pięciu latach. Dochodzą m.in. warunki okresu niemieckiej rezydencji. Ostrzeżenie o progu kosztowym nie jest kompletnym testem. Nie sumujemy automatycznie exit tax z pełnym polskim PIT — traktat i podstawa kosztowa wymagają wtedy osobnej analizy.</p>
+          <p>To narzędzie edukacyjne, nie indywidualna porada inwestycyjna ani podatkowa. Nie zawiera ofert, afiliacji, analityki ani zewnętrznych bibliotek. Wysokość zwrotu, wiek i dochody to zmienne przykładowe.</p>
+        </details>
+        <details open>
+          <summary>Źródła i stan prawny</summary>
+          <p>Rozróżniamy reformę od starych projektów. W szczególności nie używamy dawnej propozycji „30% / 20%”, wieku 62 lat ani limitu kosztów 1,5%.</p>
+          <div class="sources">
+            <a href="https://www.bundesfinanzministerium.de/Content/DE/FAQ/reform-der-privaten-altersvorsorge.html" target="_blank" rel="noreferrer">BMF: reformowane dopłaty, pełna podstawa podatku, wiek 65–70, dziedziczenie, UE/EOG</a>
+            <a href="https://www.recht.bund.de/bgbl/1/2026/156/VO.html" target="_blank" rel="noreferrer">Altersvorsorgereformgesetz · BGBl. 2026 I nr 156</a>
+            <a href="https://www.gesetze-im-internet.de/estg/__95.html" target="_blank" rel="noreferrer">§95 EStG: zwrot wsparcia przy zamieszkiwaniu poza UE/EOG w fazie wypłat</a>
+            <a href="https://www.gesetze-im-internet.de/estg/__93.html" target="_blank" rel="noreferrer">§93 EStG: wypłata niezgodna z warunkami i transfer do małżonka</a>
+            <a href="https://www.gesetze-im-internet.de/estg/__32a.html" target="_blank" rel="noreferrer">§32a EStG: niemiecka skala PIT 2026</a>
+            <a href="https://www.gesetze-im-internet.de/solzg_1995/__3.html" target="_blank" rel="noreferrer">Soli: próg zwolnienia (§3) oraz stawka i strefa przejściowa (§4)</a>
+            <a href="https://www.gesetze-im-internet.de/invstg_2018/__20.html" target="_blank" rel="noreferrer">§20 InvStG: 30% zwolnienia dla funduszy akcyjnych</a>
+            <a href="https://www.gesetze-im-internet.de/invstg_2018/__18.html" target="_blank" rel="noreferrer">§18 InvStG: Vorabpauschale</a>
+            <a href="https://www.gesetze-im-internet.de/invstg_2018/__19.html" target="_blank" rel="noreferrer">§19 InvStG: odjęcie Vorabpauschale przy sprzedaży i podatek od wyjścia</a>
+            <a href="https://api.sejm.gov.pl/eli/acts/DU/2005/90/text.pdf" target="_blank" rel="noreferrer">Traktat DE–PL: art. 18, strona PDF 16; prywatna a ustawowa emerytura</a>
+            <a href="https://api.sejm.gov.pl/eli/acts/DU/2025/163/text.pdf" target="_blank" rel="noreferrer">Polska ustawa PIT: art. 27, 30b, 11a, 21 ust. 1 pkt 58, 22 ust. 1m; tekst jednolity 2025</a>
+            <a href="https://www.podatki.gov.pl/podatki-osobiste/sd/ulgi-i-zwolnienia/" target="_blank" rel="noreferrer">Ministerstwo Finansów: zwolnienia spadkowe i zgłoszenie SD-Z2</a>
+            <a href="https://www.finanztip.de/altersvorsorge/altersvorsorgedepot/" target="_blank" rel="noreferrer">Finanztip: omówienie reformy i planu wypłat, aktualizacja 7.08.2026</a>
+          </div>
+          <p>Art. 18 ust. 1 traktatu zasadniczo przypisuje prywatną emeryturę państwu zamieszkania; ust. 2 odrębnie traktuje obowiązkowy system ubezpieczeń społecznych. Traktat wskazuje państwo, <strong>nie ustanawia polskiej stawki ani zwolnienia</strong>. Zwolnienie dla zagranicznego pracowniczego programu emerytalnego nie rozciąga się automatycznie na każdy prywatny depozyt. Nie znaleźliśmy potwierdzonej interpretacji KIS dotyczącej wypłaty nowego AV-depot.</p>
+        </details>
+      </section>
+    </div>
+  </main>
+  <footer><span>by <a href="https://github.com/kamil-gwozdz">@kamil-gwozdz</a></span><a href="https://github.com/kamil-gwozdz/altersvorsorge-de-pl">Kod źródłowy · publiczne repozytorium</a><span>Bez śledzenia. Obliczenia lokalne. Założenia ≠ gwarancje.</span></footer>
+  <script id="calculator-model">
+    "use strict";
+    (() => {
+      const DEFAULTS = Object.freeze({ startAge: 35, monthly: 150, moveAge: 50, retireAge: 67, returnRate: 6, workTax: 42, avFee: .6, etfFee: .2, baseRate: 2.5, allowance: 1000, deOther: 24000, plOther: 60000, plMode: "scale", plCustom: 12, fx: 4.3, lump: 0, endAge: 85, retirementReturn: 3, inflation: 2, indexTax: true, real: false, deathAge: 80 });
+      const LIMITS = Object.freeze({ startAge: [18, 64], monthly: [0, 500], moveAge: [18, 70], retireAge: [65, 70], returnRate: [-2, 10], workTax: [0, 45], avFee: [0, 2], etfFee: [0, 1], baseRate: [0, 5], allowance: [0, 1000], deOther: [0, 100000], plOther: [0, 240000], plCustom: [0, 45], fx: [3, 6], lump: [0, 30], endAge: [85, 100], retirementReturn: [-2, 8], inflation: [0, 5], deathAge: [18, 100] });
+      function validate(p) {
+        for (const [key, [min, max]] of Object.entries(LIMITS)) {
+          if (!Number.isFinite(p[key]) || p[key] < min || p[key] > max) throw new Error(`Nieprawidłowa wartość: ${key}.`);
+        }
+        for (const key of ["startAge", "moveAge", "retireAge", "endAge", "deathAge"]) {
+          if (!Number.isInteger(p[key])) throw new Error(`Wiek musi być pełną liczbą lat: ${key}.`);
+        }
+        if (p.moveAge < p.startAge || p.moveAge > p.retireAge || p.deathAge < p.startAge) throw new Error("Przeprowadzka lub wiek śmierci nie pasują do wieku początkowego.");
+        if (!["scale", "custom"].includes(p.plMode)) throw new Error("Nieznany wariant podatku w Polsce.");
+        if (typeof p.indexTax !== "boolean" || typeof p.real !== "boolean") throw new Error("Nieprawidłowe ustawienie indeksacji.");
+      }
+      function funding(monthly, marginal) {
+        const own = Math.min(1800, monthly * 12);
+        const subsidy = own < 120 ? 0 : .5 * Math.min(own, 360) + .25 * Math.max(0, own - 360);
+        return { own, subsidy, refund: Math.max(0, (own + subsidy) * marginal / 100 - subsidy), extra: monthly * 12 - own };
+      }
+      function germanPIT(income) {
+        const x = Math.floor(Math.max(0, income));
+        if (x <= 12348) return 0;
+        if (x <= 17799) { const y = (x - 12348) / 10000; return Math.floor((914.51 * y + 1400) * y); }
+        if (x <= 69878) { const z = (x - 17799) / 10000; return Math.floor((173.1 * z + 2397) * z + 1034.87); }
+        return Math.floor(x <= 277825 ? .42 * x - 11135.63 : .45 * x - 19470.38);
+      }
+      function germanTax(income, index = 1) {
+        const pit = germanPIT(income / index) * index;
+        const soli = Math.max(0, Math.min(.055 * pit, .119 * (pit - 20350 * index)));
+        return pit + soli;
+      }
+      function polishTax(income, index = 1) {
+        const x = Math.max(0, income / index);
+        return (x <= 120000 ? Math.max(0, .12 * x - 3600) : 10800 + .32 * (x - 120000)) * index;
+      }
+      function pensionTax(gross, country, p, year) {
+        const inflation = (1 + p.inflation / 100) ** year;
+        const index = p.indexTax ? inflation : 1;
+        if (country === "PL") {
+          if (p.plMode === "custom") return gross * p.plCustom / 100;
+          const other = p.plOther * inflation;
+          return (polishTax(other + gross * p.fx, index) - polishTax(other, index)) / p.fx;
+        }
+        const other = p.deOther * inflation;
+        return germanTax(other + gross, index) - germanTax(other, index);
+      }
+      function account() { return { lots: [], taxable: 0, tax: 0, allowance: 0, country: "DE", index: 1, ordinary: null, workTax: 42 }; }
+      function balance(a) { return a.lots.reduce((sum, lot) => sum + lot.value, 0); }
+      function deposit(a, amount, month = 12) {
+        if (amount > 1e-9) a.lots.push({ value: amount, basis: amount, credit: 0, yearStart: amount, fraction: (12 - month) / 12 });
+      }
+      function beginYear(a, country, p, year, ordinary = null) {
+        a.country = country;
+        a.index = p.indexTax ? (1 + p.inflation / 100) ** year : 1;
+        a.allowance = country === "DE" ? p.allowance * a.index : 0;
+        a.taxable = 0;
+        a.tax = 0;
+        a.ordinary = ordinary;
+        a.workTax = p.workTax;
+        for (const lot of a.lots) { lot.yearStart = lot.value; lot.fraction = 1; }
+      }
+      function capitalTaxTotal(a, taxable) {
+        const amount = Math.max(0, taxable - a.allowance);
+        if (a.country === "PL") return amount * .19;
+        const standard = amount * .26375;
+        if (a.ordinary === null) return Math.min(standard, amount * a.workTax / 100);
+        return Math.min(standard, germanTax(a.ordinary + amount, a.index) - germanTax(a.ordinary, a.index));
+      }
+      function taxQuote(a, rawGain) {
+        const taxable = a.taxable + rawGain * (a.country === "DE" ? .7 : 1);
+        return { taxable, tax: capitalTaxTotal(a, taxable) - a.tax };
+      }
+      function applyTax(a, quote) { a.taxable = quote.taxable; a.tax += quote.tax; }
+      function saleQuote(a, gross) {
+        let remaining = Math.min(gross, balance(a)), gain = 0;
+        for (const lot of a.lots) {
+          if (remaining <= 1e-9) break;
+          const sold = Math.min(remaining, lot.value);
+          const ratio = lot.value > 0 ? sold / lot.value : 0;
+          gain += sold - ratio * (lot.basis + (a.country === "DE" ? lot.credit : 0));
+          remaining -= sold;
+        }
+        return taxQuote(a, gain);
+      }
+      function sellGross(a, requested) {
+        const gross = Math.max(0, Math.min(requested, balance(a)));
+        const quote = saleQuote(a, gross);
+        let remaining = gross;
+        while (remaining > 1e-8 && a.lots.length) {
+          const lot = a.lots[0], sold = Math.min(remaining, lot.value), ratio = sold / lot.value;
+          for (const key of ["value", "basis", "credit", "yearStart"]) lot[key] *= 1 - ratio;
+          remaining -= sold;
+          if (lot.value < 1e-8) a.lots.shift();
+        }
+        applyTax(a, quote);
+        return { gross, net: gross - quote.tax, tax: quote.tax };
+      }
+      function sellNet(a, net) {
+        if (net <= 0) return { gross: 0, net: 0, tax: 0 };
+        let low = 0, high = balance(a);
+        if (high - saleQuote(a, high).tax <= net) return sellGross(a, high);
+        for (let i = 0; i < 44; i++) {
+          const mid = (low + high) / 2;
+          if (mid - saleQuote(a, mid).tax < net) low = mid; else high = mid;
+        }
+        return sellGross(a, high);
+      }
+      function advanceTax(a, basisRate) {
+        if (a.country !== "DE") return 0;
+        let advance = 0;
+        for (const lot of a.lots) {
+          const value = Math.max(0, Math.min(lot.value - lot.yearStart, lot.yearStart * .7 * basisRate / 100 * lot.fraction));
+          lot.credit += value;
+          advance += value;
+        }
+        const quote = taxQuote(a, advance);
+        applyTax(a, quote);
+        if (quote.tax < 0) { deposit(a, -quote.tax); return quote.tax; }
+        return quote.tax + sellNet(a, quote.tax).tax;
+      }
+      function grow(a, monthlyFactor) { for (const lot of a.lots) lot.value *= monthlyFactor; }
+      function run(p, kind, move) {
+        validate(p);
+        const side = account(), f = funding(p.monthly, p.workTax);
+        let av = 0, supportRemaining = 0, ownTotal = 0, subsidyTotal = 0, refundTotal = 0;
+        let taxes = 0, taxesReal = 0, netTotal = 0, netReal = 0;
+        let retirement = null, moveValue = 0, moveBasis = 0;
+        const years = [], snapshots = [];
+        const save = age => {
+          const gross = av + balance(side);
+          snapshots.push({ age, av, etf: balance(side), gross, supportRemaining, child: Math.max(0, gross - supportRemaining), shortfall: Math.max(0, supportRemaining - gross) });
+        };
+        save(p.startAge);
+        for (let age = p.startAge; age < Math.max(p.endAge, p.deathAge); age++) {
+          const year = age - p.startAge, inflation = (1 + p.inflation / 100) ** year;
+          const country = move && age >= p.moveAge ? "PL" : "DE";
+          if (move && age === p.moveAge) {
+            moveValue = balance(side);
+            moveBasis = side.lots.reduce((sum, lot) => sum + lot.basis, 0);
+          }
+          const saving = age < p.retireAge, paying = !saving && age < p.endAge;
+          const rate = saving ? p.returnRate : p.retirementReturn;
+          const avGrowth = (1 + (rate - p.avFee) / 100) ** (1 / 12);
+          const etfGrowth = (1 + (rate - p.etfFee) / 100) ** (1 / 12);
+          let avLump = 0, avRegular = 0, etfLump = 0, etfRegular = 0, cashTax = 0;
+          let avTax = 0, lumpNet = 0, regularNet = 0;
+          const withdrawAV = amount => {
+            const gross = Math.max(0, Math.min(amount, av));
+            if (av > 0) supportRemaining *= 1 - gross / av;
+            av -= gross;
+            return gross;
+          };
+          if (age === p.retireAge) {
+            retirement = { av, etf: balance(side), gross: av + balance(side), age, own: ownTotal, subsidy: subsidyTotal, refund: refundTotal };
+            avLump = withdrawAV(av * p.lump / 100);
+          }
+          const avMonthly = paying ? av / ((p.endAge - age) * 12) : 0;
+          for (let month = 0; month < 12; month++) {
+            av *= avGrowth;
+            if (saving && kind === "av" && country === "DE") av += f.own / 12;
+            if (paying) avRegular += withdrawAV(age === p.endAge - 1 && month === 11 ? av : avMonthly);
+          }
+          if (saving && kind === "av" && country === "DE") {
+            av += f.subsidy;
+            subsidyTotal += f.subsidy;
+            refundTotal += f.refund;
+            supportRemaining += f.subsidy + f.refund;
+          }
+          avTax = pensionTax(avLump + avRegular, country, p, year);
+          const lumpTax = pensionTax(avLump, country, p, year);
+          lumpNet = avLump - lumpTax;
+          regularNet = avRegular - (avTax - lumpTax);
+          const ordinary = saving ? null : p.deOther * inflation + avLump + avRegular;
+          beginYear(side, country, p, year, ordinary);
+          if (age === p.retireAge) {
+            const sale = sellGross(side, balance(side) * p.lump / 100);
+            etfLump += sale.gross; lumpNet += sale.net; cashTax += sale.tax;
+          }
+          const etfMonthly = paying ? balance(side) / ((p.endAge - age) * 12) : 0;
+          for (let month = 0; month < 12; month++) {
+            grow(side, etfGrowth);
+            if (saving) deposit(side, kind === "av" && country === "DE" ? f.extra / 12 : p.monthly, month);
+            if (paying) {
+              const sale = sellGross(side, age === p.endAge - 1 && month === 11 ? balance(side) : etfMonthly);
+              etfRegular += sale.gross; regularNet += sale.net; cashTax += sale.tax;
+            }
+          }
+          if (saving) {
+            ownTotal += p.monthly * 12;
+            if (kind === "av" && country === "DE") deposit(side, f.refund);
+          }
+          const prepaid = advanceTax(side, p.baseRate);
+          const totalTax = cashTax + avTax + prepaid;
+          const net = regularNet + lumpNet;
+          taxes += totalTax;
+          taxesReal += totalTax / inflation;
+          netTotal += net;
+          netReal += net / inflation;
+          years.push({ age, year: 2027 + year, country, saving, avGross: avLump + avRegular, etfGross: etfLump + etfRegular, avTax, etfTax: cashTax + prepaid, tax: totalTax, regularNet, lumpNet, net, factor: inflation, gross: av + balance(side) });
+          save(age + 1);
+        }
+        return { kind, move, country: move ? "PL" : "DE", retirement, years, snapshots, moveValue, moveBasis, ownTotal, subsidyTotal, refundTotal, taxes, taxesReal, netTotal, netReal, first: years.find(y => y.age === p.retireAge) };
+      }
+      function simulate(p) { return [run(p, "av", false), run(p, "etf", false), run(p, "av", true), run(p, "etf", true)]; }
+      globalThis.Altersvorsorge = Object.freeze({ DEFAULTS, LIMITS, validate, funding, germanPIT, germanTax, polishTax, pensionTax, account, balance, deposit, beginYear, capitalTaxTotal, sellGross, sellNet, advanceTax, grow, run, simulate });
+    })();
+  </script>
+  <script id="calculator-ui">
+    "use strict";
+    (() => {
+      const model = globalThis.Altersvorsorge;
+      const money = new Intl.NumberFormat("pl-PL", { style: "currency", currency: "EUR", maximumFractionDigits: 0 });
+      const number = new Intl.NumberFormat("pl-PL", { maximumFractionDigits: 2 });
+      const $ = id => document.getElementById(id);
+      let current, results;
+      const title = r => `${r.kind === "av" ? "AV + boczny ETF" : "Zwykły ETF"} · ${r.country}`;
+      const units = { monthly: " €/mies.", workTax: "%", returnRate: "%", avFee: "%", etfFee: "%", baseRate: "%", allowance: " €", deOther: " €", plOther: " PLN", plCustom: "%", fx: " PLN", lump: "%", retirementReturn: "%", inflation: "%" };
+      function read() {
+        const p = {};
+        for (const [key, value] of Object.entries(model.DEFAULTS)) p[key] = typeof value === "boolean" ? $(key).checked : typeof value === "number" ? Number($(key).value) : $(key).value;
+        return p;
+      }
+      function fixAges() {
+        const start = Number($("startAge").value), retire = Number($("retireAge").value);
+        $("moveAge").min = start; $("moveAge").max = retire;
+        $("moveAge").value = Math.max(start, Math.min(retire, Number($("moveAge").value)));
+        $("deathAge").min = start;
+        $("deathAge").value = Math.max(start, Number($("deathAge").value));
+      }
+      function display(amount, age) {
+        return current.real ? amount / (1 + current.inflation / 100) ** (age - current.startAge) : amount;
+      }
+      function cash(amount, age) { return money.format(display(amount, age)); }
+      function chart(id, series, minAge, maxAge, markers = []) {
+        const svg = $(id), width = 860, height = id === "wealth-chart" ? 300 : 270;
+        const left = 74, right = 18, top = 28, bottom = 36, plotW = width - left - right, plotH = height - top - bottom;
+        const maximum = Math.max(1, ...series.flatMap(s => s.values.map(v => v.value))) * 1.1;
+        const x = age => left + (age - minAge) / Math.max(1, maxAge - minAge) * plotW;
+        const y = value => top + plotH * (1 - value / maximum);
+        let html = "";
+        for (let i = 0; i <= 4; i++) {
+          const value = maximum * i / 4, pos = y(value);
+          html += `<line class="grid" x1="${left}" x2="${width - right}" y1="${pos}" y2="${pos}"/><text x="${left - 10}" y="${pos + 4}" text-anchor="end">${number.format(Math.round(value / (maximum > 10000 ? 1000 : 1)))}${maximum > 10000 ? " tys." : ""} €</text>`;
+        }
+        for (let i = 0; i <= 5; i++) {
+          const age = Math.round(minAge + (maxAge - minAge) * i / 5);
+          html += `<text x="${x(age)}" y="${height - 10}" text-anchor="middle">${age} lat</text>`;
+        }
+        for (const marker of markers) {
+          if (marker.age < minAge || marker.age > maxAge) continue;
+          html += `<line class="marker" x1="${x(marker.age)}" x2="${x(marker.age)}" y1="${top}" y2="${height - bottom}"/><text x="${Math.min(width - 100, Math.max(left, x(marker.age) + 5))}" y="${top - 10}">${marker.label}</text>`;
+        }
+        for (const s of series) {
+          const path = s.values.map((point, i) => `${i ? "L" : "M"}${x(point.age).toFixed(2)},${y(point.value).toFixed(2)}`).join(" ");
+          html += `<path class="series ${s.kind === "av" ? "av-line" : "etf-line"} ${s.move ? "poland" : ""}" d="${path}"><title>${s.label}</title></path>`;
+        }
+        svg.innerHTML = html;
+      }
+      function render() {
+        fixAges();
+        const p = read();
+        model.validate(p);
+        current = p;
+        for (const key of Object.keys(model.LIMITS)) {
+          const output = document.querySelector(`output[for="${key}"]`);
+          if (output) output.textContent = number.format(p[key]) + (units[key] || " lat");
+        }
+        $("custom-tax-control").hidden = p.plMode !== "custom";
+        results = model.simulate(p);
+        const f = model.funding(p.monthly, p.workTax);
+        $("funding").innerHTML = `<div><small>Twoja wpłata do AV</small><strong>${money.format(f.own)}</strong><small>rocznie</small></div><div><small>Dopłata do AV</small><strong>+ ${money.format(f.subsidy)}</strong><small>rocznie</small></div><div><small>Dodatkowy zwrot PIT → ETF</small><strong>+ ${money.format(f.refund)}</strong><small>rocznie · przybliżenie</small></div>`;
+        $("funding-note").textContent = `Z budżetu ${money.format(p.monthly * 12)}/rok powstaje ${money.format(f.own + f.subsidy)} nowych wpłat do AV i ${money.format(f.refund + f.extra)} do bocznego ETF. Od ${p.moveAge}. urodzin w wariancie PL dopłaty i ulgi ustają; nowe ${money.format(p.monthly)}/mies. idzie do zwykłego ETF.`;
+        $("money-mode").textContent = p.real ? "Siła nabywcza € z 2027" : "Nominalne € w przyszłości";
+        $("metrics").innerHTML = results.map(r => `<article class="card metric ${r.kind}"><span class="chip">${r.move ? `Przeprowadzka do PL w wieku ${p.moveAge}` : "Pozostajesz w Niemczech"}</span><h3 style="margin-top:12px">${r.kind === "av" ? "Altersvorsorgedepot + boczny ETF" : "Zwykły ETF"}</h3><strong class="big">${cash(r.first.regularNet / 12, p.retireAge)}<small>netto / miesiąc w pierwszym roku</small></strong><small>Kapitał brutto przy starcie wypłat: ${cash(r.retirement.gross, p.retireAge)}${r.move ? "<br>AV w PL: wybrany scenariusz podatkowy" : ""}</small></article>`).join("");
+        const heads = `<thead><tr><th>Miara</th>${results.map(r => `<th>${title(r)}</th>`).join("")}</tr></thead>`;
+        const row = (label, values) => `<tr><td>${label}</td>${values.map(v => `<td>${v}</td>`).join("")}</tr>`;
+        const totalOwn = r => p.real ? r.years.filter(y => y.saving).reduce((sum, y) => sum + p.monthly * 12 / y.factor, 0) : r.ownTotal;
+        $("comparison").innerHTML = heads + "<tbody>" +
+          row("Własne wpłaty z budżetu", results.map(r => money.format(totalOwn(r)))) +
+          row("Dopłaty / zwroty PIT otrzymane (nominalnie)", results.map(r => `${money.format(r.subsidyTotal)} / ${money.format(r.refundTotal)}`)) +
+          row(`Kapitał brutto w wieku ${p.retireAge}`, results.map(r => cash(r.retirement.gross, p.retireAge))) +
+          row("W tym zamknięte w AV", results.map(r => cash(r.retirement.av, p.retireAge))) +
+          row("Jednorazowo netto na początku", results.map(r => cash(r.first.lumpNet, p.retireAge))) +
+          row(`Suma wypłat netto do ${p.endAge} lat`, results.map(r => `<strong>${money.format(p.real ? r.netReal : r.netTotal)}</strong>`)) +
+          row("Podatki od inwestycji w całym modelu", results.map(r => money.format(p.real ? r.taxesReal : r.taxes))) + "</tbody>";
+        $("comparison-note").textContent = p.real ? "Każdy przepływ przeliczony na siłę nabywczą 2027 r.; dopłaty i zwroty w opisanym wierszu pozostają nominalne. Nie dyskontujemy dodatkowo kosztem alternatywnym." : "Sumy nominalne z wielu lat — 1 € za 40 lat nie ma tej samej wartości co dziś. Włącz siłę nabywczą 2027 w ustawieniach inflacji.";
+        const exit = results.some(r => r.move && r.moveBasis >= 500000);
+        $("exit-warning").hidden = !exit;
+        $("exit-warning").textContent = "Uwaga: koszt nabycia jednostek jednego ETF przy emigracji osiąga co najmniej 500 000 €. Możliwy niemiecki podatek od wyjścia nie jest uwzględniony. Nie opieraj decyzji na wynikach PL przed sprawdzeniem §19 ust. 3 InvStG i skutków traktatowych.";
+        chart("wealth-chart", results.map(r => ({ ...r, label: title(r), values: r.snapshots.filter(s => s.age <= p.endAge).map(s => ({ age: s.age, value: display(s.gross, s.age) })) })), p.startAge, p.endAge, [{ age: p.moveAge, label: "PL" }, { age: p.retireAge, label: "Wypłaty" }]);
+        chart("income-chart", results.map(r => ({ ...r, label: title(r), values: r.years.filter(y => !y.saving && y.age < p.endAge).map(y => ({ age: y.age, value: display(y.regularNet / 12, y.age) })) })), p.retireAge, p.endAge - 1);
+        $("yearly").innerHTML = `<thead><tr><th>Wiek · rok</th>${results.map(r => `<th>${title(r)}<br>netto / mies.</th>`).join("")}</tr></thead><tbody>` + results[0].years.filter(y => !y.saving && y.age < p.endAge).map(y => row(`${y.age} · ${y.year}`, results.map(r => cash(r.years.find(v => v.age === y.age).regularNet / 12, y.age)))).join("") + "</tbody>";
+        $("inheritance").innerHTML = `<thead><tr><th>Wariant</th><th>Cały pozostały kapitał</th><th>Zwrot wsparcia przy wypłacie AV</th><th>Dziecko / wypłata gotówką<br>przed podatkami</th><th>Małżonek: transfer AV + ETF<br>przed podatkami</th></tr></thead><tbody>` + results.map(r => {
+          const s = r.snapshots.find(v => v.age === p.deathAge);
+          return `<tr><td>${title(r)}</td><td>${cash(s.gross, p.deathAge)}</td><td>${cash(s.supportRemaining, p.deathAge)}</td><td>${cash(s.child, p.deathAge)}${s.shortfall > .01 ? `<small>Niedobór: ${cash(s.shortfall, p.deathAge)}</small>` : ""}</td><td>${cash(s.gross, p.deathAge)}</td></tr>`;
+        }).join("") + "</tbody>";
+        $("error").hidden = true;
+        $("error").textContent = "";
+      }
+      function update() {
+        try { render(); }
+        catch (error) {
+          $("error").hidden = false;
+          $("error").textContent = `Nie udało się obliczyć wyników: ${error.message}. Poprzednie wyniki są nieaktualne.`;
+          console.error(error);
+        }
+      }
+      function reset() {
+        $("moveAge").min = model.DEFAULTS.startAge;
+        $("moveAge").max = model.DEFAULTS.retireAge;
+        $("deathAge").min = model.DEFAULTS.startAge;
+        for (const [key, value] of Object.entries(model.DEFAULTS)) {
+          if (typeof value === "boolean") $(key).checked = value; else $(key).value = value;
+        }
+        update();
+      }
+      for (const key of Object.keys(model.DEFAULTS)) $(key).addEventListener("input", update);
+      $("reset").addEventListener("click", reset);
+      $("theme").addEventListener("click", () => {
+        document.documentElement.dataset.theme = document.documentElement.dataset.theme === "dark" ? "light" : "dark";
+      });
+      $("export").addEventListener("click", () => {
+        if (!$("error").hidden) { $("status").textContent = "Najpierw popraw ustawienia; eksport nieaktualnych wyników jest zablokowany."; return; }
+        const payload = { modelVersion: 1, rulesChecked: "2026-10-13", disclaimer: "Edukacyjny scenariusz, nie prognoza ani indywidualna porada; PL AV tax is an assumption.", settings: current, results, sources: Array.from(document.querySelectorAll(".sources a"), a => a.href) };
+        const url = URL.createObjectURL(new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" }));
+        const link = document.createElement("a");
+        link.href = url; link.download = "altersvorsorge-de-pl.json"; link.click();
+        setTimeout(() => URL.revokeObjectURL(url), 1000);
+        $("status").textContent = "Pobrano założenia, wyniki roczne i źródła. Kwoty w danych surowych są nominalne.";
+      });
+      update();
+    })();
+  </script>
+</body>
+</html>

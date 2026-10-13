@@ -1,0 +1,9 @@
+{
+  "name": "altersvorsorge-de-pl",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Public, client-side retirement scenario calculator for Germany and Poland",
+  "scripts": {
+    "test": "node --test tests/*.test.cjs"
+  }
+}
